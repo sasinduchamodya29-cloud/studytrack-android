@@ -1,0 +1,80 @@
+/* StudyTrack Desktop - Smart Features Center (copied from the website's smart/assets/smart.css; uses the app's own theme variables) */
+.sm-wrap{max-width:1180px;margin:0 auto;padding-bottom:40px}
+.sm-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;overflow-x:auto;padding-bottom:2px}
+.sm-nav a{white-space:nowrap;text-decoration:none;font-size:12.5px;font-weight:600;color:var(--text-secondary);
+  padding:7px 13px;border-radius:99px;border:1px solid var(--border);background:var(--bg-card);transition:.15s}
+.sm-nav a:hover{color:var(--text-primary);border-color:var(--accent)}
+.sm-nav a.on{color:#fff;background:var(--gradient);border-color:transparent}
+.sm-title{font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;color:var(--text-primary);letter-spacing:-.3px}
+.sm-sub{font-size:13.5px;color:var(--text-muted);margin:4px 0 20px}
+.sm-muted{color:var(--text-muted);font-size:13px}
+.sm-center{text-align:center;padding:40px 20px}
+.sm-card{background:var(--bg-card);border:1px solid var(--border);border-radius:18px;padding:20px 22px;margin-bottom:16px}
+.sm-card h3{font-size:15px;font-weight:700;color:var(--text-primary);margin:0 0 12px}
+.sm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
+.sm-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.sm-grid-2{grid-template-columns:1fr}}
+.sm-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:12px;background:var(--gradient);color:#fff;
+  font-weight:700;font-size:13.5px;text-decoration:none;border:none;cursor:pointer}
+.sm-btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text-secondary)}
+.sm-link{color:#a5b4fc;font-size:12.5px;font-weight:600;text-decoration:none}
+.sm-link:hover{text-decoration:underline}
+
+/* KPI strip */
+.sm-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.sm-kpi{background:linear-gradient(160deg,rgba(99,102,241,.10),rgba(168,85,247,.04)),var(--bg-card);border:1px solid var(--border);border-radius:16px;padding:16px 18px}
+.sm-kpi small{display:block;font-size:10.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:var(--text-muted)}
+.sm-kpi b{display:block;font-family:'Outfit',sans-serif;font-size:28px;font-weight:800;color:var(--text-primary);margin-top:4px}
+.sm-kpi span{font-size:12px;color:var(--text-secondary)}
+
+/* alerts */
+.sm-alert{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border-radius:14px;border:1px solid var(--border);
+  background:var(--bg-card);margin-bottom:8px;text-decoration:none;border-left:4px solid var(--c,#38bdf8)}
+.sm-alert .ic{font-size:20px;line-height:1.2}
+.sm-alert b{display:block;font-size:13.5px;color:var(--text-primary)}
+.sm-alert span{font-size:12.5px;color:var(--text-secondary)}
+.sm-alert.danger{--c:#ef4444}.sm-alert.warn{--c:#f59e0b}.sm-alert.info{--c:#38bdf8}.sm-alert.good{--c:#10b981}
+a.sm-alert:hover{border-color:var(--c);transform:translateY(-1px);transition:.15s}
+
+/* feature cards */
+.sm-fcard{display:flex;flex-direction:column;gap:8px;text-decoration:none;background:var(--bg-card);border:1px solid var(--border);
+  border-radius:18px;padding:20px;transition:.18s;position:relative}
+.sm-fcard:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 12px 32px rgba(99,102,241,.16)}
+.sm-fcard .ic{font-size:30px}
+.sm-fcard h4{margin:0;font-size:16px;font-weight:700;color:var(--text-primary)}
+.sm-fcard p{margin:0;font-size:13px;line-height:1.5;color:var(--text-secondary)}
+.sm-chip{align-self:flex-start;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:99px;background:rgba(99,102,241,.14);color:#a5b4fc;margin-top:auto}
+.sm-tag{position:absolute;top:16px;right:16px;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:rgba(245,158,11,.16);color:#fbbf24}
+.sm-fcard.soon{opacity:.55;pointer-events:none}
+.sm-cat{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-muted);margin:6px 0 10px}
+
+/* bars / rings / rows */
+.sm-bar{height:9px;border-radius:99px;background:rgba(148,163,184,.16);overflow:hidden}
+.sm-bar i{display:block;height:100%;border-radius:99px;background:var(--c,#6366f1)}
+.sm-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.sm-row:last-child{border-bottom:none}
+.sm-dot{width:10px;height:10px;border-radius:50%;background:var(--c,#6366f1);flex-shrink:0}
+.sm-pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:color-mix(in srgb,var(--c,#6366f1) 18%,transparent);color:var(--c,#a5b4fc)}
+.sm-score{font-family:'Outfit',sans-serif;font-size:34px;font-weight:800;color:var(--c,var(--text-primary))}
+.sm-mins{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--text-primary);min-width:70px;text-align:right}
+.sm-why{margin:6px 0 0;padding-left:18px;font-size:12.5px;color:var(--text-secondary)}
+.sm-spark{width:100%;height:90px;display:block;margin:6px 0}
+.sm-cols{display:flex;align-items:flex-end;gap:8px;height:140px}
+.sm-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:6px;font-size:11px;color:var(--text-muted)}
+.sm-col i{display:block;width:100%;max-width:38px;border-radius:8px 8px 3px 3px;background:var(--gradient);min-height:3px}
+.sm-check{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.sm-check input{margin-top:5px;width:18px;height:18px;accent-color:#6366f1}
+.sm-check.done .sm-t{text-decoration:line-through;opacity:.55}
+.sm-empty{padding:26px;text-align:center;color:var(--text-muted);font-size:13.5px}
+.sm-note{font-size:12px;color:var(--text-muted);margin-top:10px}
+/* desktop additions */
+.sm-wrap a{text-decoration:none}
+.sm-wrap .sm-link:hover{text-decoration:underline}
+.sm-hero{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.sm-spread{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.sm-tt{font-size:13.5px;color:var(--text-primary)}
+.sm-actions{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap}
+.sm-alert div:last-child{min-width:0}
+html[data-skin=app] .sm-fcard:hover{transform:none;box-shadow:none}
+html[data-skin=app] .sm-btn{background:var(--accent)}
+html[data-skin=app] .sm-nav a.on{background:var(--accent)}

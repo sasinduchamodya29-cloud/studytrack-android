@@ -1,0 +1,25 @@
+{
+  "name": "studytrack-android",
+  "version": "1.29.1",
+  "private": true,
+  "description": "StudyTrack Android app (Capacitor wrapper around ../renderer)",
+  "scripts": {
+    "prepare-www": "node scripts/prepare-www.js",
+    "sync": "node scripts/prepare-www.js && npx cap sync android && node scripts/patch-android.js"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/browser": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/filesystem": "^7.0.0",
+    "@capacitor/preferences": "^7.0.0",
+    "@capacitor/share": "^7.0.0",
+    "chart.js": "4.4.0",
+    "three": "0.128.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^7.0.0"
+  }
+}

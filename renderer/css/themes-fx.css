@@ -1,0 +1,156 @@
+/* ==========================================================================
+   StudyTrack – Theme Atmosphere (themes-fx.css)
+   Loads AFTER style.css. Adds scene backgrounds, glass surfaces, per-theme
+   accent colours (replaces the hard-coded indigo) and animated effects.
+   Particles (stars, fireflies, petals…) are drawn by assets/js/theme-fx.js
+   ========================================================================== */
+
+/* ---------- 1. Per-theme tokens ---------- */
+:root, html[data-theme=dark]{--accent-rgb:99,102,241;--accent-soft:#c4b5fd;--glass:rgba(22,22,31,.80);--glass-side:rgba(13,13,21,.90);--glass-top:rgba(13,13,21,.82);--card-edge:rgba(255,255,255,.05);--fog:148,163,255}
+html[data-theme=light]   {--accent-rgb:99,102,241;--accent-soft:#4f46e5;--glass:rgba(255,255,255,.88);--glass-side:rgba(255,255,255,.92);--glass-top:rgba(255,255,255,.80);--card-edge:rgba(255,255,255,.9)}
+html[data-theme=forest]  {--accent-rgb:34,197,94; --accent-soft:#86efac;--glass:rgba(14,36,25,.74);--glass-side:rgba(8,24,16,.88);--glass-top:rgba(8,24,16,.78);--card-edge:rgba(190,242,100,.10);--fog:190,235,200}
+html[data-theme=midnight]{--accent-rgb:59,130,246;--accent-soft:#93c5fd;--glass:rgba(11,16,36,.76);--glass-side:rgba(6,9,22,.90);--glass-top:rgba(6,9,22,.80);--card-edge:rgba(147,197,253,.08);--fog:96,140,230}
+html[data-theme=galaxy]  {--accent-rgb:192,38,211;--accent-soft:#f0abfc;--glass:rgba(26,15,48,.68);--glass-side:rgba(14,7,30,.86);--glass-top:rgba(14,7,30,.74);--card-edge:rgba(240,171,252,.12)}
+html[data-theme=aurora]  {--accent-rgb:20,184,166;--accent-soft:#5eead4;--glass:rgba(12,33,48,.70);--glass-side:rgba(6,17,26,.88);--glass-top:rgba(6,17,26,.76);--card-edge:rgba(94,234,212,.10)}
+html[data-theme=sakura]  {--accent-rgb:251,113,133;--accent-soft:#fda4af;--glass:rgba(44,24,34,.72);--glass-side:rgba(26,14,20,.88);--glass-top:rgba(26,14,20,.78);--card-edge:rgba(253,164,175,.12)}
+
+/* ---------- 2. Scene backgrounds (painted on <html>) ---------- */
+html[data-theme]{background-attachment:fixed;background-repeat:no-repeat}
+html[data-theme] :is(body,.app-layout,.main-content,.page-content){background:transparent}
+
+html[data-theme=dark]{background-color:#0a0a0f;background-image:
+  radial-gradient(60% 45% at 8% 0%,rgba(99,102,241,.16),transparent 65%),
+  radial-gradient(45% 40% at 100% 100%,rgba(168,85,247,.10),transparent 65%),
+  linear-gradient(180deg,#0b0b12,#08080d)}
+html[data-theme=light]{background-color:#f4f7fc;background-image:
+  radial-gradient(55% 45% at 6% 0%,rgba(165,180,252,.40),transparent 65%),
+  radial-gradient(45% 40% at 100% 8%,rgba(244,182,255,.28),transparent 65%),
+  radial-gradient(60% 50% at 80% 100%,rgba(125,211,252,.26),transparent 65%)}
+html[data-theme=forest]{background-color:#0a1a12;background-image:
+  radial-gradient(90% 55% at 50% -12%,rgba(217,249,157,.20),transparent 62%),
+  radial-gradient(50% 40% at 0% 100%,rgba(21,128,61,.22),transparent 70%),
+  linear-gradient(180deg,#0e281a 0%,#0a1a12 50%,#050e09 100%)}
+html[data-theme=midnight]{background-color:#05060f;background-image:
+  radial-gradient(50% 40% at 88% 8%,rgba(96,165,250,.20),transparent 65%),
+  radial-gradient(60% 45% at 0% 100%,rgba(37,99,235,.14),transparent 70%),
+  linear-gradient(180deg,#060a1c 0%,#05060f 60%,#03040a 100%)}
+html[data-theme=galaxy]{background-color:#0b0518;background-image:
+  radial-gradient(60% 50% at 12% 8%,rgba(139,92,246,.34),transparent 62%),
+  radial-gradient(50% 45% at 88% 22%,rgba(236,72,153,.22),transparent 62%),
+  radial-gradient(70% 55% at 55% 105%,rgba(56,189,248,.14),transparent 62%),
+  linear-gradient(180deg,#0b0518,#120827 60%,#070312)}
+html[data-theme=aurora]{background-color:#071019;background-image:
+  radial-gradient(70% 50% at 50% 0%,rgba(20,184,166,.16),transparent 65%),
+  linear-gradient(180deg,#081522,#071019 55%,#040a10)}
+html[data-theme=sakura]{background-color:#1a0e14;background-image:
+  radial-gradient(60% 50% at 10% 0%,rgba(251,113,133,.24),transparent 62%),
+  radial-gradient(50% 45% at 100% 30%,rgba(249,168,212,.14),transparent 62%),
+  linear-gradient(180deg,#20111a,#1a0e14 60%,#12080d)}
+
+/* ---------- 3. Effect layer ---------- */
+#themeFx{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+#themeFx canvas{position:absolute;inset:0;width:100%;height:100%}
+#themeFx::before,#themeFx::after{content:none;position:absolute;pointer-events:none}
+#themeFx .fog{position:absolute;left:-25%;right:-25%;bottom:0;height:46%;display:none;filter:blur(22px);
+  background:radial-gradient(ellipse 45% 60% at 28% 100%,rgba(var(--fog),.20),transparent 70%),radial-gradient(ellipse 40% 55% at 74% 100%,rgba(var(--fog),.15),transparent 70%);
+  animation:fxFog 30s ease-in-out infinite alternate}
+html[data-theme=forest] #themeFx .fog,html[data-theme=midnight] #themeFx .fog{display:block}
+@keyframes fxFog{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
+
+/* Dark: faint tech grid */
+html[data-theme=dark] #themeFx::before{content:'';inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);
+  background-size:52px 52px;-webkit-mask-image:radial-gradient(70% 60% at 30% 20%,#000,transparent 80%);mask-image:radial-gradient(70% 60% at 30% 20%,#000,transparent 80%)}
+
+/* Galaxy: drifting nebula + planet */
+html[data-theme=galaxy] #themeFx::before{content:'';inset:-30%;will-change:transform;
+  background:radial-gradient(34% 30% at 26% 32%,rgba(168,85,247,.30),transparent 70%),radial-gradient(30% 28% at 74% 66%,rgba(236,72,153,.22),transparent 70%),radial-gradient(26% 24% at 56% 14%,rgba(56,189,248,.18),transparent 70%);
+  animation:fxSpin 90s linear infinite}
+html[data-theme=galaxy] #themeFx::after{content:'';right:-110px;bottom:-110px;width:340px;height:340px;border-radius:50%;opacity:.6;
+  background:radial-gradient(circle at 30% 28%,#e879f9 0,#a21caf 32%,#4c1d95 68%,#1e0b3a 100%);
+  box-shadow:0 0 90px 10px rgba(192,38,211,.35),inset -34px -24px 70px rgba(0,0,0,.65)}
+@keyframes fxSpin{to{transform:rotate(360deg)}}
+
+/* Forest: sun rays + pine silhouettes */
+html[data-theme=forest] #themeFx::before{content:'';top:-12%;left:-12%;right:-12%;height:85%;transform-origin:50% 0;
+  background:repeating-linear-gradient(100deg,transparent 0 70px,rgba(254,249,195,.07) 70px 112px,transparent 112px 215px);
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent 88%);mask-image:linear-gradient(180deg,#000,transparent 88%);
+  animation:fxRays 18s ease-in-out infinite alternate}
+html[data-theme=forest] #themeFx::after{content:'';left:0;right:0;bottom:0;height:min(34vh,300px);
+  background:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 300' preserveAspectRatio='none'%3E%3Crect x='17' y='288' width='6' height='12' fill='%230e2c1e'/%3E%3Cpolygon points='20,150 4,225 36,225' fill='%230e2c1e'/%3E%3Cpolygon points='20,180 -8,246 48,246' fill='%230e2c1e'/%3E%3Cpolygon points='20,210 -19,267 59,267' fill='%230e2c1e'/%3E%3Cpolygon points='20,240 -30,288 70,288' fill='%230e2c1e'/%3E%3Crect x='102' y='289' width='6' height='11' fill='%230e2c1e'/%3E%3Cpolygon points='105,161 90,230 120,230' fill='%230e2c1e'/%3E%3Cpolygon points='105,189 79,250 131,250' fill='%230e2c1e'/%3E%3Cpolygon points='105,217 69,269 141,269' fill='%230e2c1e'/%3E%3Cpolygon points='105,244 58,289 152,289' fill='%230e2c1e'/%3E%3Crect x='169' y='286' width='6' height='14' fill='%230e2c1e'/%3E%3Cpolygon points='172,129 153,214 191,214' fill='%230e2c1e'/%3E%3Cpolygon points='172,163 140,238 204,238' fill='%230e2c1e'/%3E%3Cpolygon points='172,197 128,262 216,262' fill='%230e2c1e'/%3E%3Cpolygon points='172,232 115,286 229,286' fill='%230e2c1e'/%3E%3Crect x='225' y='289' width='6' height='11' fill='%230e2c1e'/%3E%3Cpolygon points='228,166 213,233 243,233' fill='%230e2c1e'/%3E%3Cpolygon points='228,193 203,252 253,252' fill='%230e2c1e'/%3E%3Cpolygon points='228,220 193,271 263,271' fill='%230e2c1e'/%3E%3Cpolygon points='228,246 183,289 273,289' fill='%230e2c1e'/%3E%3Crect x='306' y='287' width='6' height='13' fill='%230e2c1e'/%3E%3Cpolygon points='309,136 291,218 327,218' fill='%230e2c1e'/%3E%3Cpolygon points='309,169 279,241 339,241' fill='%230e2c1e'/%3E%3Cpolygon points='309,202 266,264 352,264' fill='%230e2c1e'/%3E%3Cpolygon points='309,234 254,287 364,287' fill='%230e2c1e'/%3E%3Crect x='364' y='288' width='6' height='12' fill='%230e2c1e'/%3E%3Cpolygon points='367,147 350,224 384,224' fill='%230e2c1e'/%3E%3Cpolygon points='367,178 339,245 395,245' fill='%230e2c1e'/%3E%3Cpolygon points='367,208 327,266 407,266' fill='%230e2c1e'/%3E%3Cpolygon points='367,239 316,288 418,288' fill='%230e2c1e'/%3E%3Crect x='437' y='289' width='6' height='11' fill='%230e2c1e'/%3E%3Cpolygon points='440,167 425,234 455,234' fill='%230e2c1e'/%3E%3Cpolygon points='440,194 415,252 465,252' fill='%230e2c1e'/%3E%3Cpolygon points='440,220 405,271 475,271' fill='%230e2c1e'/%3E%3Cpolygon points='440,247 395,289 485,289' fill='%230e2c1e'/%3E%3Crect x='521' y='287' width='6' height='13' fill='%230e2c1e'/%3E%3Cpolygon points='524,138 506,219 542,219' fill='%230e2c1e'/%3E%3Cpolygon points='524,170 494,242 554,242' fill='%230e2c1e'/%3E%3Cpolygon points='524,203 482,264 566,264' fill='%230e2c1e'/%3E%3Cpolygon points='524,235 470,287 578,287' fill='%230e2c1e'/%3E%3Crect x='582' y='289' width='6' height='11' fill='%230e2c1e'/%3E%3Cpolygon points='585,168 570,234 600,234' fill='%230e2c1e'/%3E%3Cpolygon points='585,194 561,252 609,252' fill='%230e2c1e'/%3E%3Cpolygon points='585,221 551,271 619,271' fill='%230e2c1e'/%3E%3Cpolygon points='585,247 541,289 629,289' fill='%230e2c1e'/%3E%3Crect x='639' y='287' width='6' height='13' fill='%230e2c1e'/%3E%3Cpolygon points='642,143 625,222 659,222' fill='%230e2c1e'/%3E%3Cpolygon points='642,174 613,243 671,243' fill='%230e2c1e'/%3E%3Cpolygon points='642,206 601,265 683,265' fill='%230e2c1e'/%3E%3Cpolygon points='642,237 589,287 695,287' fill='%230e2c1e'/%3E%3Crect x='707' y='289' width='6' height='11' fill='%230e2c1e'/%3E%3Cpolygon points='710,166 695,233 725,233' fill='%230e2c1e'/%3E%3Cpolygon points='710,193 685,252 735,252' fill='%230e2c1e'/%3E%3Cpolygon points='710,220 675,271 745,271' fill='%230e2c1e'/%3E%3Cpolygon points='710,246 665,289 755,289' fill='%230e2c1e'/%3E%3Crect x='769' y='289' width='6' height='11' fill='%230e2c1e'/%3E%3Cpolygon points='772,165 757,232 787,232' fill='%230e2c1e'/%3E%3Cpolygon points='772,192 747,251 797,251' fill='%230e2c1e'/%3E%3Cpolygon points='772,219 737,270 807,270' fill='%230e2c1e'/%3E%3Cpolygon points='772,246 727,289 817,289' fill='%230e2c1e'/%3E%3Crect x='841' y='287' width='6' height='13' fill='%230e2c1e'/%3E%3Cpolygon points='844,143 827,222 861,222' fill='%230e2c1e'/%3E%3Cpolygon points='844,174 815,243 873,243' fill='%230e2c1e'/%3E%3Cpolygon points='844,206 803,265 885,265' fill='%230e2c1e'/%3E%3Cpolygon points='844,237 791,287 897,287' fill='%230e2c1e'/%3E%3Crect x='897' y='285' width='6' height='15' fill='%230e2c1e'/%3E%3Cpolygon points='900,118 880,209 920,209' fill='%230e2c1e'/%3E%3Cpolygon points='900,154 866,234 934,234' fill='%230e2c1e'/%3E%3Cpolygon points='900,191 853,260 947,260' fill='%230e2c1e'/%3E%3Cpolygon points='900,227 839,285 961,285' fill='%230e2c1e'/%3E%3Crect x='970' y='289' width='6' height='11' fill='%230e2c1e'/%3E%3Cpolygon points='973,163 958,232 988,232' fill='%230e2c1e'/%3E%3Cpolygon points='973,190 948,251 998,251' fill='%230e2c1e'/%3E%3Cpolygon points='973,218 937,270 1009,270' fill='%230e2c1e'/%3E%3Cpolygon points='973,245 927,289 1019,289' fill='%230e2c1e'/%3E%3Crect x='1055' y='288' width='6' height='12' fill='%230e2c1e'/%3E%3Cpolygon points='1058,156 1042,228 1074,228' fill='%230e2c1e'/%3E%3Cpolygon points='1058,185 1031,248 1085,248' fill='%230e2c1e'/%3E%3Cpolygon points='1058,214 1021,268 1095,268' fill='%230e2c1e'/%3E%3Cpolygon points='1058,242 1010,288 1106,288' fill='%230e2c1e'/%3E%3Crect x='1130' y='286' width='6' height='14' fill='%230e2c1e'/%3E%3Cpolygon points='1133,130 1114,215 1152,215' fill='%230e2c1e'/%3E%3Cpolygon points='1133,164 1102,239 1164,239' fill='%230e2c1e'/%3E%3Cpolygon points='1133,198 1089,263 1177,263' fill='%230e2c1e'/%3E%3Cpolygon points='1133,232 1076,286 1190,286' fill='%230e2c1e'/%3E%3Crect x='47' y='284' width='6' height='16' fill='%23071810'/%3E%3Cpolygon points='50,103 28,202 72,202' fill='%23071810'/%3E%3Cpolygon points='50,142 14,229 86,229' fill='%23071810'/%3E%3Cpolygon points='50,182 -1,257 101,257' fill='%23071810'/%3E%3Cpolygon points='50,221 -16,284 116,284' fill='%23071810'/%3E%3Crect x='178' y='279' width='6' height='21' fill='%23071810'/%3E%3Cpolygon points='181,36 152,168 210,168' fill='%23071810'/%3E%3Cpolygon points='181,89 132,205 230,205' fill='%23071810'/%3E%3Cpolygon points='181,142 112,242 250,242' fill='%23071810'/%3E%3Cpolygon points='181,194 93,279 269,279' fill='%23071810'/%3E%3Crect x='298' y='284' width='6' height='16' fill='%23071810'/%3E%3Cpolygon points='301,104 279,202 323,202' fill='%23071810'/%3E%3Cpolygon points='301,143 265,229 337,229' fill='%23071810'/%3E%3Cpolygon points='301,182 250,257 352,257' fill='%23071810'/%3E%3Cpolygon points='301,222 235,284 367,284' fill='%23071810'/%3E%3Crect x='407' y='284' width='6' height='16' fill='%23071810'/%3E%3Cpolygon points='410,105 389,202 431,202' fill='%23071810'/%3E%3Cpolygon points='410,144 374,230 446,230' fill='%23071810'/%3E%3Cpolygon points='410,183 359,257 461,257' fill='%23071810'/%3E%3Cpolygon points='410,222 345,284 475,284' fill='%23071810'/%3E%3Crect x='537' y='283' width='6' height='17' fill='%23071810'/%3E%3Cpolygon points='540,93 517,196 563,196' fill='%23071810'/%3E%3Cpolygon points='540,134 502,225 578,225' fill='%23071810'/%3E%3Cpolygon points='540,176 486,254 594,254' fill='%23071810'/%3E%3Cpolygon points='540,217 471,283 609,283' fill='%23071810'/%3E%3Crect x='650' y='281' width='6' height='19' fill='%23071810'/%3E%3Cpolygon points='653,57 626,178 680,178' fill='%23071810'/%3E%3Cpolygon points='653,106 608,213 698,213' fill='%23071810'/%3E%3Cpolygon points='653,154 590,247 716,247' fill='%23071810'/%3E%3Cpolygon points='653,203 572,281 734,281' fill='%23071810'/%3E%3Crect x='754' y='279' width='6' height='21' fill='%23071810'/%3E%3Cpolygon points='757,41 729,170 785,170' fill='%23071810'/%3E%3Cpolygon points='757,93 709,207 805,207' fill='%23071810'/%3E%3Cpolygon points='757,145 690,243 824,243' fill='%23071810'/%3E%3Cpolygon points='757,196 670,279 844,279' fill='%23071810'/%3E%3Crect x='856' y='279' width='6' height='21' fill='%23071810'/%3E%3Cpolygon points='859,37 830,168 888,168' fill='%23071810'/%3E%3Cpolygon points='859,90 810,205 908,205' fill='%23071810'/%3E%3Cpolygon points='859,142 791,242 927,242' fill='%23071810'/%3E%3Cpolygon points='859,195 771,279 947,279' fill='%23071810'/%3E%3Crect x='970' y='279' width='6' height='21' fill='%23071810'/%3E%3Cpolygon points='973,39 944,170 1002,170' fill='%23071810'/%3E%3Cpolygon points='973,91 925,206 1021,206' fill='%23071810'/%3E%3Cpolygon points='973,143 905,243 1041,243' fill='%23071810'/%3E%3Cpolygon points='973,196 886,279 1060,279' fill='%23071810'/%3E%3Crect x='1108' y='283' width='6' height='17' fill='%23071810'/%3E%3Cpolygon points='1111,87 1088,193 1134,193' fill='%23071810'/%3E%3Cpolygon points='1111,130 1072,223 1150,223' fill='%23071810'/%3E%3Cpolygon points='1111,172 1056,253 1166,253' fill='%23071810'/%3E%3Cpolygon points='1111,215 1040,283 1182,283' fill='%23071810'/%3E%3C/svg%3E") repeat-x left bottom/auto 100%}
+@keyframes fxRays{from{transform:rotate(-2.5deg);opacity:.5}to{transform:rotate(2.5deg);opacity:1}}
+
+/* Midnight: moon */
+html[data-theme=midnight] #themeFx::after{content:'';right:8%;top:8%;width:84px;height:84px;border-radius:50%;
+  background:radial-gradient(circle at 36% 34%,#f8fafc,#cbd5e1 58%,#94a3b8);
+  box-shadow:0 0 50px 14px rgba(147,197,253,.28),0 0 160px 60px rgba(59,130,246,.14);opacity:.9}
+
+/* Aurora: northern-light curtains */
+html[data-theme=aurora] #themeFx::before{content:'';top:-25%;left:-15%;right:-15%;height:80%;filter:blur(38px);
+  background:linear-gradient(100deg,transparent 8%,rgba(52,211,153,.34) 28%,rgba(34,211,238,.30) 50%,rgba(167,139,250,.26) 72%,transparent 92%);
+  -webkit-mask-image:linear-gradient(180deg,#000 10%,transparent 85%);mask-image:linear-gradient(180deg,#000 10%,transparent 85%);
+  animation:fxAurora 18s ease-in-out infinite alternate}
+html[data-theme=aurora] #themeFx::after{content:'';top:-20%;left:-10%;right:-10%;height:70%;filter:blur(50px);opacity:.7;
+  background:linear-gradient(80deg,transparent 15%,rgba(45,212,191,.28) 40%,rgba(129,140,248,.24) 65%,transparent 88%);
+  animation:fxAurora 26s ease-in-out infinite alternate-reverse}
+@keyframes fxAurora{0%{transform:translateX(-7%) skewX(-8deg) scaleY(.9)}100%{transform:translateX(7%) skewX(8deg) scaleY(1.1)}}
+
+/* Sakura: soft blossom moon */
+html[data-theme=sakura] #themeFx::after{content:'';right:6%;top:6%;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(253,164,175,.32),rgba(251,113,133,.10) 55%,transparent 72%);filter:blur(2px);animation:fxPulse 9s ease-in-out infinite alternate}
+@keyframes fxPulse{from{transform:scale(.94);opacity:.7}to{transform:scale(1.06);opacity:1}}
+
+@media(max-width:768px){
+  html[data-theme=galaxy] #themeFx::after{width:210px;height:210px;right:-90px;bottom:-90px}
+  html[data-theme=sakura] #themeFx::after{width:150px;height:150px}
+  html[data-theme=midnight] #themeFx::after{width:60px;height:60px}
+}
+@media(prefers-reduced-motion:reduce){#themeFx::before,#themeFx::after,#themeFx .fog{animation:none!important}}
+
+/* ---------- 4. Glass surfaces ---------- */
+html[data-theme] :is(.card,.stat-card){background:var(--glass);box-shadow:inset 0 1px 0 var(--card-edge)}
+html[data-theme] .sidebar{background:var(--glass-side)}
+html[data-theme] .topbar{background:var(--glass-top)}
+html[data-theme] .card:hover,html[data-theme] .stat-card:hover{border-color:rgba(var(--accent-rgb),.45);box-shadow:inset 0 1px 0 var(--card-edge),0 10px 34px -12px rgba(var(--accent-rgb),.40)}
+
+html[data-theme=light] :is(.card,.stat-card){box-shadow:0 1px 2px rgba(15,23,42,.05),0 10px 28px -14px rgba(99,102,241,.22)}
+html[data-theme=light] .card:hover,html[data-theme=light] .stat-card:hover{box-shadow:0 2px 4px rgba(15,23,42,.05),0 16px 36px -14px rgba(99,102,241,.32)}
+html[data-theme=light] .sidebar{box-shadow:6px 0 30px -18px rgba(15,23,42,.25)}
+html[data-theme=light] .topbar{box-shadow:0 8px 24px -18px rgba(15,23,42,.30)}
+
+/* Forest: earthy, moss-lit */
+html[data-theme=forest] :is(.card,.stat-card){border-color:rgba(134,239,172,.16)}
+html[data-theme=forest] .topbar-title,html[data-theme=forest] .card-title{color:#f0fff5}
+html[data-theme=forest] .progress-fill{background:linear-gradient(90deg,#16a34a,#84cc16,#fde047)}
+
+/* Galaxy / Aurora: neon glow */
+html[data-theme=galaxy] :is(.card,.stat-card){border-color:rgba(192,132,252,.22)}
+html[data-theme=galaxy] .card:hover,html[data-theme=galaxy] .stat-card:hover{box-shadow:0 0 0 1px rgba(232,121,249,.35),0 14px 44px -12px rgba(192,38,211,.55)}
+html[data-theme=galaxy] :is(.topbar-title,.card-title,.stat-value){text-shadow:0 0 22px rgba(217,70,239,.40)}
+html[data-theme=aurora] :is(.topbar-title,.card-title,.stat-value){text-shadow:0 0 20px rgba(45,212,191,.35)}
+html[data-theme=galaxy] .progress-fill{background:linear-gradient(90deg,#8b5cf6,#d946ef,#ec4899);box-shadow:0 0 12px rgba(217,70,239,.6)}
+html[data-theme=aurora] .progress-fill{background:linear-gradient(90deg,#14b8a6,#22d3ee,#a78bfa);box-shadow:0 0 12px rgba(34,211,238,.5)}
+html[data-theme=midnight] .progress-fill{box-shadow:0 0 10px rgba(59,130,246,.5)}
+
+/* ---------- 5. Accent colour follows the theme (was fixed indigo) ---------- */
+html[data-theme] .nav-item.active{color:var(--accent-soft);background:rgba(var(--accent-rgb),.14)}
+html[data-theme] .nav-item.active::before{background:var(--gradient)}
+html[data-theme] .nav-item:hover{background:rgba(var(--accent-rgb),.08)}
+html[data-theme] .btn-primary{box-shadow:0 4px 16px rgba(var(--accent-rgb),.34)}
+html[data-theme] .btn-primary:hover{box-shadow:0 8px 26px rgba(var(--accent-rgb),.50)}
+html[data-theme] .form-control:focus,html[data-theme] .otp-box:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.20)}
+html[data-theme] .otp-box.filled{background:rgba(var(--accent-rgb),.10)}
+html[data-theme] .badge-purple{background:rgba(var(--accent-rgb),.16);color:var(--accent-soft)}
+html[data-theme] .alert-info{background:rgba(var(--accent-rgb),.10);border-color:rgba(var(--accent-rgb),.30);color:var(--accent-soft)}
+html[data-theme] .countdown-card{background:linear-gradient(135deg,rgba(var(--accent-rgb),.18),rgba(var(--accent-rgb),.05));border-color:rgba(var(--accent-rgb),.32)}
+html[data-theme] .countdown-card::before{background:radial-gradient(circle,rgba(var(--accent-rgb),.16),transparent 70%)}
+html[data-theme] .auth-wrapper::before{background:radial-gradient(ellipse at 25% 25%,rgba(var(--accent-rgb),.14),transparent 55%),radial-gradient(ellipse at 75% 75%,rgba(var(--accent-rgb),.09),transparent 55%)}
+html[data-theme] .heatmap-cell[data-level="1"]{background:rgba(var(--accent-rgb),.30)}
+html[data-theme] .heatmap-cell[data-level="2"]{background:rgba(var(--accent-rgb),.55)}
+html[data-theme] .heatmap-cell[data-level="3"]{background:rgba(var(--accent-rgb),.80)}
+html[data-theme] .heatmap-cell[data-level="4"]{background:rgb(var(--accent-rgb))}
+html[data-theme=light] .nav-item.active{background:rgba(var(--accent-rgb),.12)}
+html[data-theme=light] .nav-item:hover{background:rgba(var(--accent-rgb),.07)}
+html[data-theme] ::selection{background:rgba(var(--accent-rgb),.40);color:#fff}
+html[data-theme] ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,rgba(var(--accent-rgb),.55),rgba(var(--accent-rgb),.25))}
+html[data-theme] .sidebar-logo .logo-icon,html[data-theme] .user-avatar{box-shadow:0 4px 16px rgba(var(--accent-rgb),.35)}

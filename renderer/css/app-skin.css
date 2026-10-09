@@ -1,0 +1,248 @@
+/* ════════════════════════════════════════════════════════════════════════
+   StudyTrack Desktop — "App" skin  (loads LAST, after desktop.css)
+
+   The website look is a stack of bordered cards on one flat page. A desktop app
+   (Spotify, Linear, Notion, Arc…) feels different, so this skin changes the *structure*
+   of the look, not just the colours:
+
+     1. window backdrop + title bar are ONE seamless surface
+     2. sidebar sits directly on the backdrop (no panel, no border, no gradient)
+     3. the page is a rounded "island" panel floating inside the window
+     4. surfaces are flat and borderless; depth comes from tone, not outlines
+     5. calm motion: no pulsing / shining buttons, no lifting cards, tiny press feedback
+     6. compact density + native-style controls
+
+   Everything is scoped to html[data-skin=app]; remove that attribute (Ctrl+Shift+K) to get
+   the classic website look back. All 7 colour themes keep working (only CSS variables are used).
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* ── 0. tokens ─────────────────────────────────────────────────────────── */
+html[data-skin=app]{
+  --app-bg:color-mix(in srgb,var(--bg-primary) 52%,#000);        /* window backdrop (darker than the page) */
+  --app-island:color-mix(in srgb,var(--bg-primary) 93%,#fff);    /* the page panel */
+  --app-surface:var(--bg-card);                                   /* cards */
+  --app-surface-2:color-mix(in srgb,var(--bg-card) 78%,var(--text-muted));
+  --app-hair:color-mix(in srgb,var(--text-primary) 7%,transparent); /* hairline instead of the heavy border */
+  --app-hover:color-mix(in srgb,var(--text-primary) 6%,transparent);
+  --app-r:14px;--app-r-lg:18px;
+  --app-gap:12px;
+  --tb:36px;
+  --sb-w:228px;
+  /* dashboard radii (its own :root vars) */
+  --dr:12px;--dlg:var(--app-r-lg);--dxl:20px;--dg:14px;
+}
+html[data-skin=app][data-theme=light]{
+  --app-bg:color-mix(in srgb,var(--bg-primary) 90%,#475569);
+  --app-island:#fbfcfe;
+  --app-surface:#fff;
+  --app-surface-2:color-mix(in srgb,var(--bg-secondary) 90%,#64748b);
+  --app-hair:rgba(15,23,42,.07);
+  --app-hover:rgba(15,23,42,.05);
+}
+html[data-skin=app].sb-mini{--sb-w:76px}
+
+/* ── 1. window: backdrop + title bar are one surface ───────────────────── */
+html[data-skin=app][data-theme]{background:var(--app-bg)!important;background-image:none!important}
+html[data-skin=app] body{background:transparent}
+html[data-skin=app] #stTitlebar{background:var(--app-bg);border-bottom:0}
+html[data-skin=app] #stTitlebar .tb-name{font-size:12px}
+html[data-skin=app] #stTitlebar .tb-title{font-weight:600;opacity:.8}
+html[data-skin=app] #stTitlebar .tb-nav button{border-radius:8px}
+
+/* ── 2. sidebar: directly on the backdrop ──────────────────────────────── */
+html[data-skin=app] body .sidebar{
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  backdrop-filter:none;width:var(--sb-w);
+}
+html[data-skin=app] .sidebar-header{border:0;padding:8px 14px 10px}
+html[data-skin=app] .st-logo-icon,html[data-skin=app] .st-logo-icon img{width:30px;height:30px;border-radius:9px}
+html[data-skin=app] .st-logo-link{gap:10px}
+html[data-skin=app] .st-logo-name{font-size:15px}
+html[data-skin=app] .sidebar-nav{padding:4px 10px 8px}
+html[data-skin=app] .nav-section{margin-bottom:4px}
+html[data-skin=app] .nav-section-title{
+  padding:10px 10px 5px;margin:0;border-radius:6px;font-size:10px;letter-spacing:.9px;color:var(--text-muted);opacity:.8;
+}
+html[data-skin=app] .nav-section-title:hover{background:transparent;opacity:1}
+html[data-skin=app].sb-mini .nav-section-title,html[data-skin=app].sb-mini .nav-section-title:hover{padding:0;margin:10px 24px;height:1px;border-radius:1px;font-size:0;opacity:.7;background:var(--app-hair)}
+html[data-skin=app] .nav-section-chevron{opacity:0;transition:opacity .15s,transform .32s cubic-bezier(.4,0,.2,1)}
+html[data-skin=app] .nav-section-title:hover .nav-section-chevron{opacity:.9}
+
+html[data-skin=app] body .nav-item{
+  padding:5px 8px;gap:10px;border-radius:10px;font-size:13px;font-weight:500;margin-bottom:1px;
+  color:var(--text-secondary);transition:background .12s,color .12s,transform .1s;
+}
+html[data-skin=app] body .nav-item:hover{background:var(--app-hover);color:var(--text-primary)}
+html[data-skin=app] body .nav-item:active{transform:scale(.97)}
+html[data-skin=app] body .nav-item.active{
+  color:var(--text-primary);font-weight:600;
+  background:var(--app-island);
+  box-shadow:0 0 0 1px var(--app-hair),0 1px 2px rgba(0,0,0,.18);
+}
+html[data-skin=app] body .nav-item.active::before{display:none}
+html[data-skin=app] .ni{width:26px;height:26px;border-radius:8px}
+html[data-skin=app] .ni svg{width:14px;height:14px}
+html[data-skin=app] .nav-item:hover .ni{transform:none;filter:none}
+html[data-skin=app] .nav-item.active .ni{filter:none;box-shadow:0 0 0 1px color-mix(in srgb,currentColor 35%,transparent)}
+
+/* gold "Rate & Review" + "Contact" blocks: quiet, flat, smaller */
+html[data-skin=app]:not(.sb-mini) #sidebarActionBtns a{
+  margin:0 10px 4px!important;padding:8px 10px!important;border-radius:10px!important;font-size:12.5px!important;
+  background:var(--app-hover)!important;border:0!important;box-shadow:none!important;transform:none!important;color:var(--text-secondary)!important;
+}
+html[data-skin=app]:not(.sb-mini) #sidebarActionBtns a:hover{background:color-mix(in srgb,var(--text-primary) 10%,transparent)!important;color:var(--text-primary)!important}
+html[data-skin=app]:not(.sb-mini) #sidebarActionBtns a svg{width:15px!important;height:15px!important;filter:none!important}
+html[data-skin=app]:not(.sb-mini) #sidebarActionBtns a>span[style*="font-size:10px"]{background:rgba(var(--accent-rgb),.16)!important;border:0!important;color:var(--accent-soft)!important;font-size:9.5px!important;padding:2px 7px!important}
+
+/* user tile */
+html[data-skin=app] body .sidebar-user{border:0!important;background:transparent!important;padding:8px 10px 10px}
+html[data-skin=app] .sidebar-user .user-card{background:var(--app-surface);border-radius:12px;padding:8px 10px!important;gap:8px!important}
+html[data-skin=app] .user-avatar{width:30px;height:30px;border-radius:9px;font-size:12px;box-shadow:none}
+html[data-skin=app] .user-info .name{font-size:12.5px}
+html[data-skin=app] .user-info .role{font-size:10.5px}
+html[data-skin=app] .sidebar-user a[href$="/logout"]{width:28px!important;height:28px!important;border-radius:8px!important;background:transparent!important;border:0!important;opacity:.75}
+html[data-skin=app] .sidebar-user a[href$="/logout"]:hover{opacity:1;background:rgba(239,68,68,.14)!important}
+
+/* mini (icon rail) sidebar */
+html[data-skin=app].sb-mini .sidebar-header{padding:6px 0 8px}
+html[data-skin=app].sb-mini .sidebar .nav-item{padding:2px 0;margin-bottom:3px}
+html[data-skin=app].sb-mini body .nav-item.active{background:transparent;box-shadow:none}
+html[data-skin=app].sb-mini .nav-item .ni{width:38px;height:38px;border-radius:11px}
+html[data-skin=app].sb-mini .nav-item .ni svg{width:18px;height:18px}
+html[data-skin=app].sb-mini .nav-item.active .ni{box-shadow:0 0 0 1.5px color-mix(in srgb,currentColor 55%,transparent)}
+html[data-skin=app].sb-mini .sidebar-user .user-card{background:transparent}
+html[data-skin=app].sb-mini #sidebarActionBtns a{border:0!important;background:var(--app-hover)!important;box-shadow:none!important}
+
+/* ── 3. the page is a rounded island ───────────────────────────────────── */
+html[data-skin=app] body .main-content{
+  margin:var(--tb) 10px 10px var(--sb-w);
+  height:calc(100vh - var(--tb) - 10px);
+  background:var(--app-island)!important;
+  border-radius:var(--app-r-lg);
+  box-shadow:0 0 0 1px var(--app-hair);
+  scrollbar-gutter:auto;
+}
+html[data-skin=app] .main-content::-webkit-scrollbar{width:10px}
+html[data-skin=app] .main-content::-webkit-scrollbar-track{margin:12px 0}
+html[data-skin=app] body .page-content{padding:6px 22px 28px!important;background:transparent!important}
+
+/* top bar lives inside the island */
+html[data-skin=app] body .topbar{
+  position:sticky;top:0;left:auto;right:auto;height:58px;padding:0 18px 0 14px;
+  background:color-mix(in srgb,var(--app-island) 86%,transparent)!important;
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);
+  border:0!important;box-shadow:none!important;z-index:20;
+  border-radius:var(--app-r-lg) var(--app-r-lg) 0 0;
+}
+html[data-skin=app] .topbar-title{font-family:'Sora','Inter',sans-serif;font-size:19px;font-weight:800;letter-spacing:-.4px}
+html[data-skin=app] .sb-collapse-btn{
+  width:32px!important;height:32px!important;border:0!important;border-radius:9px!important;background:transparent!important;color:var(--text-muted)!important;
+}
+html[data-skin=app] .sb-collapse-btn:hover{background:var(--app-hover)!important;color:var(--text-primary)!important}
+
+html[data-skin=app] .topbar-right>a[href$="/profile"],html[data-skin=app] .topbar-right>a[href$="/profile"]:hover{background:var(--accent)!important;color:#fff!important}
+
+/* top-bar buttons: they carry inline borders/backgrounds, hence !important */
+html[data-skin=app] .topbar-right>a,html[data-skin=app] .topbar-right>button,html[data-skin=app] .topbar-right #notifBellWrap>button{
+  height:34px!important;border-radius:10px!important;border:0!important;box-shadow:none!important;
+  background:var(--app-surface)!important;color:var(--text-secondary)!important;transition:background .12s,color .12s,transform .1s!important;
+}
+html[data-skin=app] .topbar-right>a[style*="padding:0 14px"]{padding:0 12px!important}
+html[data-skin=app] .topbar-right>a:hover,html[data-skin=app] .topbar-right>button:hover,html[data-skin=app] .topbar-right #notifBellWrap>button:hover{
+  background:var(--app-surface-2)!important;color:var(--text-primary)!important;
+}
+html[data-skin=app] .topbar-right>a:active,html[data-skin=app] .topbar-right>button:active{transform:scale(.95)}
+
+/* top-bar icon buttons light up on their own page (class set by app.js setActive; wins over the flat rules above) */
+html[data-skin=app] .topbar-right>a.tb-on,html[data-skin=app] .topbar-right>a.tb-on:hover,
+html[data-skin=app] .topbar-right #notifBellWrap>button.tb-on,html[data-skin=app] .topbar-right #notifBellWrap>button.tb-on:hover{
+  background:color-mix(in srgb,var(--accent) 18%,transparent)!important;color:var(--accent)!important;box-shadow:inset 0 0 0 1.5px var(--accent)!important}
+html[data-skin=app] .topbar-right>a[href$="/music"].tb-on,html[data-skin=app] .topbar-right>a[href$="/music"].tb-on:hover{
+  background:rgba(30,215,96,.16)!important;color:#1ED760!important;box-shadow:inset 0 0 0 1.5px #1ED760!important}
+html[data-skin=app] .topbar-right>a.user-avatar.tb-on,html[data-skin=app] .topbar-right>a.user-avatar.tb-on:hover{
+  background:var(--accent)!important;color:#fff!important;box-shadow:0 0 0 2px var(--bg-primary,#0a0a0f),0 0 0 4px var(--accent)!important}
+
+/* ── 4. flat surfaces ──────────────────────────────────────────────────── */
+html[data-skin=app] :is(.card,.stat-card,.dgr,.dclk,.dst,.dc,.dsw,.dsc,.dprf,.dcd,.da,.tutorial-banner,.tg-banner,.sl-st,.sl-card,.ls-card){
+  background:var(--app-surface);border:0;box-shadow:none;
+  outline:1px solid var(--app-hair);outline-offset:-1px;
+}
+/* decorative web-style glow blobs */
+html[data-skin=app] :is(.dgr,.dclk,.dst,.sl-st)::before,html[data-skin=app] :is(.dst,.sl-st)::after{display:none}
+html[data-skin=app] :is(.dsw,.dsc){background-image:none!important;background:var(--app-surface)!important}
+html[data-skin=app] :is(.dst,.dsc,.dsw,.dprf,.card,.sl-st):hover{transform:none!important;box-shadow:none!important;background:var(--app-surface-2)}
+html[data-skin=app] .dst{padding:18px 18px 15px}
+html[data-skin=app] .dc{padding:18px}
+html[data-skin=app] .dgr{padding:20px 22px}
+html[data-skin=app] .dclk{padding:22px 26px}
+/* inner "inset" tiles */
+html[data-skin=app] :is(.dxp-track,.dstats>*,.dcd-face){background:var(--app-island)}
+html[data-skin=app] .dxp-track{height:6px}
+html[data-skin=app] .dxp-fill{background:var(--accent)}
+html[data-skin=app] .stat-card::before{display:none}
+
+/* calm the web-style attention seekers */
+html[data-skin=app] .dgr-btn,html[data-skin=app] .dgr-btn svg{animation:none!important}
+html[data-skin=app] .dgr-btn::before{display:none!important}
+html[data-skin=app] .dgr-btn{padding:9px 15px;border-radius:10px;font-size:13px;box-shadow:none!important;border:0}
+html[data-skin=app] .dgr-btn:hover{transform:none!important;filter:brightness(1.1)}
+html[data-skin=app] .dgr-btn.primary{background:var(--accent);color:#fff}
+html[data-skin=app] .dgr-btn.secondary{background:var(--app-surface-2);color:var(--text-primary)}
+html[data-skin=app] .dgr-btn.telegram{background:#229ed9}
+html[data-skin=app] .dgr-hi span{background:none;-webkit-text-fill-color:currentColor;color:var(--accent-soft)}
+html[data-skin=app] .dclk-time{background:none;-webkit-text-fill-color:currentColor;color:var(--text-primary);letter-spacing:-2px}
+html[data-skin=app] .dclk-icons{opacity:.45}
+html[data-skin=app] .dgr-av,html[data-skin=app] .dgr-av{box-shadow:none;border-radius:14px}
+
+/* study log */
+html[data-skin=app] :is(.sl-btn,.ls-start-btn,.ls-stop-btn,.ls-pause-btn,.sl-save-btn){border-radius:10px;box-shadow:none!important;transform:none!important}
+html[data-skin=app] :is(.sl-btn,.ls-start-btn,.ls-stop-btn,.sl-save-btn):active{transform:scale(.97)!important}
+html[data-skin=app] .sl-btn-primary{background:var(--accent)!important}
+html[data-skin=app] .sl-btn-secondary{background:var(--app-surface-2)!important;border-color:transparent!important}
+html[data-skin=app] :is(.sl-period,.sl-ptb){background:var(--app-surface);border:0}
+html[data-skin=app] .sl-modal{border:0;box-shadow:0 0 0 1px var(--app-hair),0 24px 70px rgba(0,0,0,.55);border-radius:18px}
+html[data-skin=app] .sl-alert,html[data-skin=app] .sl-warn{border-radius:12px}
+
+/* controls */
+html[data-skin=app] .btn{border-radius:10px;font-weight:600;box-shadow:none!important;transform:none!important;transition:background .12s,filter .12s}
+html[data-skin=app] .btn-primary{background:var(--accent)}
+html[data-skin=app] .btn:hover{filter:brightness(1.1)}
+html[data-skin=app] .btn:active{transform:scale(.97)!important}
+html[data-skin=app] .btn-secondary{background:var(--app-surface-2);border-color:transparent}
+html[data-skin=app] .form-control,html[data-skin=app] select,html[data-skin=app] input[type=text],html[data-skin=app] input[type=search],html[data-skin=app] input[type=number],html[data-skin=app] textarea{
+  background:var(--app-island);border:1px solid var(--app-hair);border-radius:10px;
+}
+html[data-skin=app] .form-control:focus,html[data-skin=app] input:focus,html[data-skin=app] textarea:focus,html[data-skin=app] select:focus{
+  border-color:var(--accent);box-shadow:0 0 0 3px rgba(var(--accent-rgb),.2)}
+html[data-skin=app] :is(.badge,.dsttag){border-radius:7px}
+html[data-skin=app] table{border-collapse:separate;border-spacing:0}
+html[data-skin=app] :is(.drow,.drow-hd){border-color:var(--app-hair)!important}
+
+/* floating action button + panels get native-feeling shadows */
+html[data-skin=app] #notifPanel{border:0!important;border-radius:14px!important;box-shadow:0 0 0 1px var(--app-hair),0 18px 50px rgba(0,0,0,.45)!important}
+html[data-skin=app] #stDeskToast{border:0!important;box-shadow:0 0 0 1px var(--app-hair),0 14px 40px rgba(0,0,0,.5)!important;border-radius:12px!important}
+
+/* ── 5. motion / loading ───────────────────────────────────────────────── */
+html[data-skin=app] #pageContent.st-enter{animation:appIn .2s cubic-bezier(.2,.7,.2,1)}
+@keyframes appIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+html[data-skin=app] .st-skel i{border:0;border-radius:var(--app-r-lg);background:linear-gradient(100deg,var(--app-surface) 30%,var(--app-surface-2) 50%,var(--app-surface) 70%);background-size:300% 100%}
+html[data-skin=app] .st-splash{background:var(--app-bg)}
+html[data-skin=app] .st-offline{top:calc(var(--tb) + 6px);left:50%;right:auto;transform:translate(-50%,-160%);border-radius:99px;padding:6px 16px}
+html[data-skin=app] .st-offline.show{box-shadow:0 8px 24px rgba(0,0,0,.35)}
+html[data-skin=app] .st-offline.show{transform:translate(-50%,0)}
+
+/* ── 6. login + placeholder screens ────────────────────────────────────── */
+html[data-skin=app] body.st-login-mode .st-login-wrap{
+  margin:var(--tb) 10px 10px;height:calc(100vh - var(--tb) - 10px);border-radius:var(--app-r-lg);
+  background:radial-gradient(700px 420px at 50% -10%,rgba(var(--accent-rgb),.16),transparent 70%),var(--app-island);
+  box-shadow:0 0 0 1px var(--app-hair)}
+html[data-skin=app] .st-login-card{background:var(--app-surface);border:0;outline:1px solid var(--app-hair);outline-offset:-1px;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+html[data-skin=app] .st-login-btn,html[data-skin=app] .st-ph-btn{background:var(--accent);box-shadow:none;border-radius:11px}
+html[data-skin=app] .st-login-btn:hover:not(:disabled),html[data-skin=app] .st-ph-btn:hover{filter:brightness(1.1)}
+html[data-skin=app] .st-login-btn:active:not(:disabled){transform:scale(.98)}
+
+/* sidebar overlay / narrow windows */
+@media (max-width:900px){
+  html[data-skin=app] body .main-content{margin-left:10px}
+}
+@media (prefers-reduced-motion:reduce){html[data-skin=app] *{transition-duration:.01ms!important}}

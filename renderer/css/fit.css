@@ -1,0 +1,41 @@
+/* v1.14 — fit every screen size (small laptops, Windows scaling 125% / 150%, small windows).
+   Loaded last so it can correct the older rules. */
+
+/* 1) the old "max-width:900px" rule pushed the page under the 260px sidebar (overlap).
+      769-900px  -> page starts right after the (icon-rail) sidebar
+      <=768px    -> sidebar is the slide-in drawer, page uses the full width            */
+@media (min-width:769px) and (max-width:900px){
+  html[data-skin=app] body .main-content{margin-left:var(--sb-w)}
+}
+@media (max-width:768px){
+  :root{--sb-w:0px}
+  html[data-skin=app] body .main-content{margin-left:10px}
+  html[data-skin=app] body .sidebar{width:260px}
+}
+
+/* 2) narrow window (769-1099px): the sidebar is always the icon rail, the expand button is hidden
+      (fit.js adds html.sb-narrow) */
+html.sb-narrow .sb-collapse-btn{display:none!important}
+html.sb-narrow .topbar-right{gap:6px}
+html.sb-narrow body .page-content,html.sb-narrow[data-skin=app] body .page-content{padding-left:16px!important;padding-right:16px!important}
+
+/* 3) never let anything push the page sideways */
+.main-content,.page-content{min-width:0;max-width:100%}
+.page-content img,.page-content canvas,.page-content table{max-width:100%}
+.topbar-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* 4) short screens (small laptops): tighter sidebar + top bar so everything is reachable */
+@media (max-height:640px){
+  html[data-skin=app] .sidebar-header{padding:4px 12px 6px}
+  html[data-skin=app] .sidebar .nav-item{padding-top:5px;padding-bottom:5px;margin-bottom:1px}
+  html[data-skin=app].sb-mini .sidebar .nav-item{padding:1px 0;margin-bottom:1px}
+  html[data-skin=app].sb-mini .nav-item .ni{width:32px;height:32px;border-radius:10px}
+  html[data-skin=app].sb-mini .nav-item .ni svg{width:16px;height:16px}
+  html[data-skin=app] .sidebar-nav{padding-top:6px;padding-bottom:6px}
+  html[data-skin=app] .sidebar-user{padding:6px 10px}
+  html[data-skin=app] body .topbar{height:50px}
+  html[data-skin=app] body .page-content{padding-top:4px!important;padding-bottom:18px!important}
+}
+@media (max-height:520px){
+  html[data-skin=app] .sidebar-user .user-info{display:none}
+}

@@ -1,0 +1,268 @@
+/* StudyTrack Desktop - Notifications page (styles copied from the website's notifications.php) */
+
+/* ── Page header ─────────────────────────────────────── */
+.nf-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.nf-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: 'Sora', sans-serif;
+  letter-spacing: -.3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.nf-unread-badge {
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 99px;
+  padding: 2px 9px;
+  letter-spacing: .2px;
+}
+.nf-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ── Filter tabs ─────────────────────────────────────── */
+.nf-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.nf-tab {
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s;
+  user-select: none;
+}
+.nf-tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.nf-tab.active {
+  background: rgba(99,102,241,.12);
+  border-color: rgba(99,102,241,.4);
+  color: var(--accent);
+}
+.nf-tab-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 99px;
+  background: rgba(99,102,241,.18);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 0 5px;
+  margin-left: 5px;
+}
+
+/* ── Notification card ───────────────────────────────── */
+.nf-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.nf-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: border-color .18s, transform .18s, opacity .3s;
+  position: relative;
+  overflow: hidden;
+  animation: nfSlideIn .25s ease both;
+}
+.nf-item:hover {
+  border-color: rgba(99,102,241,.3);
+  transform: translateY(-1px);
+}
+.nf-item.is-unread {
+  background: var(--bg-card);
+  border-color: rgba(99,102,241,.2);
+}
+.nf-item.is-unread::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 14px 0 0 14px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2, #8b5cf6));
+}
+.nf-item.is-read {
+  opacity: .65;
+}
+.nf-item[data-link]:hover {
+  border-color: rgba(99,102,241,.4);
+}
+.nf-item[data-link] .nf-body::after {
+  content: '→';
+  position: absolute;
+  right: 56px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity .18s, right .18s;
+  pointer-events: none;
+}
+.nf-item[data-link]:hover .nf-body::after {
+  opacity: 1;
+  right: 52px;
+}
+.nf-item.removing {
+  opacity: 0;
+  transform: translateX(20px) scale(.97);
+  pointer-events: none;
+}
+@keyframes nfSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* type icon */
+.nf-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  flex-shrink: 0;
+  border: 1px solid;
+}
+
+/* content */
+.nf-body { flex: 1; min-width: 0; }
+.nf-item-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.nf-unread-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px var(--accent);
+}
+.nf-message {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+.nf-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.nf-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.nf-type-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  border: 1px solid;
+}
+
+/* actions */
+.nf-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+.nf-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.nf-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(99,102,241,.08); }
+.nf-btn.danger:hover { border-color: rgba(239,68,68,.4); color: #ef4444; background: rgba(239,68,68,.08); }
+
+/* ── Empty state ─────────────────────────────────────── */
+.nf-empty {
+  text-align: center;
+  padding: 64px 20px;
+  background: var(--bg-card);
+  border: 1px dashed var(--border);
+  border-radius: 16px;
+}
+.nf-empty-icon {
+  font-size: 52px;
+  margin-bottom: 16px;
+  display: block;
+  filter: grayscale(.3);
+}
+.nf-empty-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  font-family: 'Sora', sans-serif;
+}
+.nf-empty-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── Action bar buttons ──────────────────────────────── */
+.nf-action-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.nfx .btn{display:inline-flex;align-items:center;padding:7px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--bg-secondary);color:var(--text-primary)}
+.nfx .btn:hover{border-color:var(--accent);color:var(--accent)}.nfx .btn:disabled{opacity:.5}

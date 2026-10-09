@@ -1,0 +1,57 @@
+/* StudyTrack Android - loaded LAST (after fit.css). Everything is scoped to html.st-android (added by mobile-bridge.js),
+   so the Windows app is never affected. The website's own <=768px layout (slide-in drawer + ☰ button) is reused. */
+
+/* 1) no Windows title bar: the status-bar inset takes its place (hardware Back button clicks #tbBack in the background) */
+html.st-android #stTitlebar { display: none !important; }
+html.st-android, html.st-android[data-skin=app], html.st-android[data-theme] {
+  --tb: env(safe-area-inset-top, 0px);
+  --sb-w: 0px;
+}
+
+/* 2) page fills the whole phone screen (no rounded "island" margins), uses dvh so the URL/nav bars never cut it */
+html.st-android, html.st-android body { height: 100%; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
+html.st-android[data-skin=app] body .main-content,
+html.st-android body .main-content {
+  margin: var(--tb) 0 0 0 !important;
+  height: calc(100vh - var(--tb)) !important;
+  height: calc(100dvh - var(--tb)) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: auto;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html.st-android .main-content::-webkit-scrollbar { width: 0; height: 0; }
+html.st-android .page-content { padding-left: 12px !important; padding-right: 12px !important; padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)) !important; }
+
+/* 3) drawer + top bar */
+html.st-android .sidebar { top: var(--tb) !important; height: calc(100vh - var(--tb)) !important; height: calc(100dvh - var(--tb)) !important; width: min(82vw, 300px) !important; padding-bottom: env(safe-area-inset-bottom, 0px); }
+html.st-android .sidebar-overlay { top: 0; }
+html.st-android body .topbar { left: 0 !important; top: 0; height: 54px; padding-left: 10px; padding-right: 10px; }
+html.st-android .sb-collapse-btn { display: none !important; }
+html.st-android .sidebar-toggle { display: flex !important; width: 42px; height: 42px; align-items: center; justify-content: center; border-radius: 12px; }
+
+/* 4) login / splash / offline bar below the status bar */
+html.st-android .st-splash { inset: var(--tb) 0 0 0; }
+html.st-android body.st-login-mode .st-login-wrap,
+html.st-android[data-skin=app] body.st-login-mode .st-login-wrap { margin: var(--tb) 0 0 0 !important; height: calc(100dvh - var(--tb)) !important; border-radius: 0 !important; }
+html.st-android #stAuth { top: var(--tb, 0px); }
+html.st-android .st-offline { top: var(--tb); }
+html.st-android[data-skin=app] .st-offline { top: calc(var(--tb) + 6px); max-width: 92vw; }
+
+/* 5) touch comfort */
+html.st-android button, html.st-android .btn, html.st-android .nav-item, html.st-android a { touch-action: manipulation; }
+html.st-android .nav-item { min-height: 44px; }
+html.st-android input, html.st-android select, html.st-android textarea { font-size: 16px !important; }   /* stops Android zooming into inputs */
+html.st-android body { -webkit-user-select: none; user-select: none; }
+html.st-android input, html.st-android textarea, html.st-android [contenteditable], html.st-android .selectable { -webkit-user-select: text; user-select: text; }
+
+/* 6) wide content scrolls inside itself, never sideways on the page */
+html.st-android table { display: block; max-width: 100%; overflow-x: auto; }
+html.st-android .stats-grid, html.st-android .grid-2, html.st-android .grid-3 { grid-template-columns: 1fr 1fr; }
+@media (max-width: 380px) { html.st-android .stats-grid, html.st-android .grid-2, html.st-android .grid-3 { grid-template-columns: 1fr; } }
+html.st-android canvas { max-width: 100%; }
+
+/* 7) pop-ups / dialogs fit the phone */
+html.st-android .st-confirm-ov { align-items: flex-end; padding-bottom: env(safe-area-inset-bottom, 0px); }
+html.st-android [class*="modal"] > *, html.st-android [class*="popup"] > * { max-width: 94vw; max-height: 88dvh; }

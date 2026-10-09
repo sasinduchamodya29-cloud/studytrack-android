@@ -1,0 +1,38 @@
+/* StudyTrack Desktop - Data Export & Import. Only CSS variables -> works with every theme and both skins. */
+.de-wrap{max-width:1100px;margin:0 auto;padding-bottom:40px}
+.de-head{margin-bottom:20px}.de-title{font-size:22px;font-weight:800;font-family:'Sora','Outfit',sans-serif;color:var(--text-primary)}.de-sub{font-size:13px;color:var(--text-muted);margin-top:3px}
+.de-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px;margin-bottom:20px}
+.de-stat{padding:10px 12px;border-radius:12px;background:var(--bg-card);border:1px solid var(--border)}
+.de-stat b{display:block;font-size:20px;font-weight:800;color:var(--text-primary)}.de-stat span{font-size:11px;color:var(--text-muted)}
+.de-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+@media (max-width:900px){.de-grid{grid-template-columns:1fr}}
+.de-card{padding:22px;border-radius:18px;background:var(--bg-card);border:1px solid var(--border)}
+.de-card-t{font-size:16px;font-weight:800;color:var(--text-primary)}.de-card-s{font-size:12.5px;color:var(--text-muted);margin:3px 0 16px}
+.de-lab{font-size:11.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin:0 0 8px}
+.de-two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.de-opt{border:1px solid var(--border);background:var(--bg-secondary);color:var(--text-secondary);border-radius:12px;padding:10px 6px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;text-align:center}
+.de-opt i{display:block;font-style:normal;font-size:18px;margin-bottom:2px}.de-opt small{display:block;font-size:10px;font-weight:500;opacity:.7;margin-top:2px}
+.de-opt.on{border-color:var(--accent,#6366f1);background:rgba(99,102,241,.12);color:var(--text-primary)}
+.de-checks{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;max-height:420px;overflow:auto;padding-right:4px}
+.de-glabel{font-size:10.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin:8px 0 2px}
+.de-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:11px;border:1px solid var(--border);background:var(--bg-secondary);cursor:pointer}
+.de-row.on{border-color:rgba(99,102,241,.45);background:rgba(99,102,241,.08)}
+.de-row input{accent-color:#6366f1;flex:0 0 auto}.de-ic{font-size:17px}
+.de-lb{flex:1;min-width:0}.de-lb b{display:block;font-size:13px;color:var(--text-primary)}.de-lb small{display:block;font-size:11px;color:var(--text-muted)}
+.de-ct{font-size:11.5px;font-weight:800;color:var(--text-secondary);background:var(--bg-card);border-radius:99px;padding:2px 9px}
+.de-go{width:100%;border:0;border-radius:12px;padding:12px;font:inherit;font-size:14px;font-weight:800;color:#fff;cursor:pointer;background:linear-gradient(135deg,#6366f1,#8b5cf6)}
+.de-go.alt{background:linear-gradient(135deg,#0ea5e9,#38bdf8)}.de-go:disabled{opacity:.45;cursor:default}
+.de-warn{display:flex;gap:8px;align-items:flex-start;padding:10px 12px;border-radius:10px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171;font-size:12px;line-height:1.5;margin:-6px 0 16px}
+.de-warn[hidden],.de-meta[hidden],.de-result[hidden]{display:none}
+.de-drop{position:relative;border:2px dashed var(--border);border-radius:14px;padding:22px;text-align:center;margin-bottom:12px;background:var(--bg-secondary)}
+.de-drop.drag{border-color:#38bdf8;background:rgba(56,189,248,.08)}
+.de-drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.de-drop-ic{font-size:28px}.de-drop-t{font-size:14px;font-weight:700;color:var(--text-primary);margin-top:4px}.de-drop-s{font-size:12px;color:var(--text-muted)}
+.de-drop-f{display:none;margin-top:8px;font-size:12.5px;font-weight:700;color:#38bdf8}
+.de-meta{padding:10px 14px;border-radius:10px;background:rgba(14,165,233,.07);border:1px solid rgba(14,165,233,.2);font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.8}
+.de-meta b{color:var(--text-primary)}
+.de-result{margin-top:14px;padding:14px;border-radius:12px;font-size:13px}
+.de-result.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);color:var(--text-primary)}
+.de-result.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#f87171}
+.de-rt{font-weight:800;margin-bottom:4px}.de-rrow{display:flex;flex-wrap:wrap;gap:8px}
+.de-rs{padding:6px 10px;border-radius:9px;background:var(--bg-card);border:1px solid var(--border)}.de-rs b{margin-right:5px}.de-rs span{font-size:11.5px;color:var(--text-muted)}

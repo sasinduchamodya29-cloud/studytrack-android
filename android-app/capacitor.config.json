@@ -1,0 +1,13 @@
+{
+  "appId": "icu.edurx.studytrack",
+  "appName": "StudyTrack",
+  "webDir": "www",
+  "backgroundColor": "#0a0a0f",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "app.edurx.icu"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
